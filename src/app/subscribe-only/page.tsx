@@ -43,7 +43,7 @@ export default function SubscriberForm() {
 
       localStorage.setItem("isPremiumUser", "true");
       router.push("/premium-home");
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again later.");
     }
   };
