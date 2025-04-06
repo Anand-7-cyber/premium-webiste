@@ -2,11 +2,12 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function SubscribeForm() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
   };
@@ -14,6 +15,7 @@ export default function SubscribeForm() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
       <h1 className="text-3xl font-bold text-green-700 mb-4">💎 Get Premium Access for just ₹9</h1>
+
       {submitted ? (
         <p className="text-green-600 text-xl">🎉 Form submitted! We&#39;ll verify and grant access soon.</p>
       ) : (
@@ -59,10 +61,13 @@ export default function SubscribeForm() {
       <div className="mt-8 text-center">
         <h2 className="text-lg font-medium mb-2 text-gray-700">Pay ₹9 to this UPI ID:</h2>
         <p className="text-xl font-semibold text-blue-600">anandkrnkp06@okaxis</p>
-        <img
+
+        <Image
           src="/your-qr-image-path.jpg"
           alt="Scan QR to Pay"
-          className="w-56 mt-4 rounded-lg border"
+          width={224}
+          height={224}
+          className="mt-4 rounded-lg border"
         />
       </div>
     </div>
