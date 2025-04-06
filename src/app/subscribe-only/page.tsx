@@ -1,3 +1,4 @@
+// src/app/subscribe-only/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -19,7 +20,6 @@ export default function SubscriberForm() {
         router.replace("/premium-home");
       }
     }
-    // ✅ router ko dependency se hata diya to error nahi aayega
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,7 +43,7 @@ export default function SubscriberForm() {
 
       localStorage.setItem("isPremiumUser", "true");
       router.push("/premium-home");
-    } catch {
+    } catch (err) {
       setError("Something went wrong. Please try again later.");
     }
   };
