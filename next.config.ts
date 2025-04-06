@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: true,
+    serverActions: {}, // ✅ boolean nahi, object hona chahiye
   },
   transpilePackages: ['@clerk/nextjs'],
 }
