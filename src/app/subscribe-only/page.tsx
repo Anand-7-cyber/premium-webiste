@@ -19,6 +19,8 @@ export default function SubscriberForm() {
         router.replace("/premium-home");
       }
     }
+    // ✅ router ko dependency se hata diya to error nahi aayega
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {

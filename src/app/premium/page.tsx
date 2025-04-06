@@ -14,7 +14,7 @@ export default function PremiumPage() {
       const hasSubscription = email.includes('premium')
 
       if (!hasSubscription) {
-        router.replace('/') // redirect to home if not premium
+        router.replace('/') // Redirect to home if not premium
       }
     }
   }, [isLoaded, isSignedIn, user, router])
@@ -33,7 +33,7 @@ export default function PremiumPage() {
       <div className="flex flex-col items-center justify-center mt-20 text-center">
         <h2 className="text-4xl font-bold mb-4">Welcome to Premium Zone 🚀</h2>
         <p className="text-lg max-w-xl">
-          You've unlocked premium access! Enjoy all the exclusive features and content curated just for you.
+          You&apos;ve unlocked premium access! Enjoy all the exclusive features and content curated just for you.
         </p>
 
         <button

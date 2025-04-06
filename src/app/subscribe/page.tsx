@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from 'react';
 
 export default function SubscribeForm() {
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
-    setSubmitted(true)
-  }
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
@@ -65,5 +65,5 @@ export default function SubscribeForm() {
         />
       </div>
     </div>
-  )
+  );
 }
