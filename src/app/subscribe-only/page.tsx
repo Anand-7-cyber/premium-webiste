@@ -1,10 +1,10 @@
-// src/app/subscribe-only/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { db } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import Image from "next/image";
 
 export default function SubscriberForm() {
   const [username, setUsername] = useState("");
@@ -43,7 +43,7 @@ export default function SubscriberForm() {
 
       localStorage.setItem("isPremiumUser", "true");
       router.push("/premium-home");
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again later.");
     }
   };
@@ -59,15 +59,20 @@ export default function SubscriberForm() {
         </h2>
 
         <p className="text-center text-gray-600 text-sm">
-          Pay ₹9 to UPI ID: <span className="font-semibold text-black">anandkrnkp06@okaxis</span> <br />
+          Pay ₹9 to UPI ID:{" "}
+          <span className="font-semibold text-black">anandkrnkp06@okaxis</span> <br />
           Or scan QR below & enter Google Transaction ID
         </p>
 
-        <img
-          src="https://i.postimg.cc/1500XzGH/Screenshot-2025-04-06-084253.png"
-          alt="Scan to Pay"
-          className="w-32 mx-auto rounded-lg border p-2"
-        />
+        <div className="w-32 mx-auto rounded-lg border p-2 overflow-hidden">
+          <Image
+            src="https://i.postimg.cc/1500XzGH/Screenshot-2025-04-06-084253.png"
+            alt="Scan to Pay"
+            width={128}
+            height={128}
+            className="rounded-lg"
+          />
+        </div>
 
         <input
           type="text"
