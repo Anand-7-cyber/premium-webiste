@@ -8,7 +8,7 @@ export default function DashboardPage() {
   const { user, isSignedIn, isLoaded } = useUser()
   const router = useRouter()
 
-  const [isPremium, setIsPremium] = useState(false)
+  const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
@@ -16,12 +16,15 @@ export default function DashboardPage() {
       const isLocalPremium = localStorage.getItem('isPremiumUser') === 'true'
 
       if (isClerkPremium || isLocalPremium) {
-        setIsPremium(true)
+        router.replace('/premium') // redirect premium users
+        return
       }
-    }
-  }, [isLoaded, isSignedIn, user])
 
-  if (!isLoaded) {
+      setIsChecking(false)
+    }
+  }, [isLoaded, isSignedIn, user, router])
+
+  if (!isLoaded || isChecking) {
     return <p className="text-center mt-10 text-gray-500">Loading...</p>
   }
 
@@ -76,20 +79,14 @@ export default function DashboardPage() {
           </ul>
         </section>
 
-        {isPremium ? (
-          <div className="text-center mt-10 text-green-600 font-bold text-xl">
-            ✅ You are a Premium Member! Welcome to StudyElite Pro 🔥
-          </div>
-        ) : (
-          <div className="text-center mt-10">
-            <button
-              onClick={() => router.push('/subscribe-only')}
-              className="bg-purple-700 hover:bg-purple-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transition"
-            >
-              🔓 Unlock Premium & Supercharge Your Study Journey
-            </button>
-          </div>
-        )}
+        <div className="text-center mt-10">
+          <button
+            onClick={() => router.push('/subscribe-only')}
+            className="bg-purple-700 hover:bg-purple-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transition"
+          >
+            🔓 Unlock Premium & Supercharge Your Study Journey
+          </button>
+        </div>
       </div>
 
       <footer className="mt-10 text-sm text-gray-600">
