@@ -7,7 +7,7 @@ export default function FreeTrialPage() {
   const router = useRouter();
 
   const handleUpgradeClick = () => {
-    router.push('/subscribe-only'); // Yeh wo page hai jahan tera premium form hai
+    router.push('/subscribe'); // Yeh wo page hai jahan tera premium form hai
   };
 
   return (
