@@ -1,112 +1,84 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function DashboardPage() {
-  const { user, isSignedIn, isLoaded } = useUser();
+export default function PremiumPage() {
+  const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
-  const pathname = usePathname();
-  const [isChecking, setIsChecking] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
 
   useEffect(() => {
-    if (!isLoaded || !isSignedIn) return;
+    if (isLoaded) {
+      if (!isSignedIn) {
+        router.replace('/');
+        return;
+      }
 
-    const isClerkPremium = user?.publicMetadata?.premium === true;
-    const isLocalPremium =
-      typeof window !== 'undefined' &&
-      localStorage.getItem('isPremiumUser') === 'true';
-    const isOnPremiumPage = pathname === '/premium';
+      const email = user?.emailAddresses?.[0]?.emailAddress || '';
+      const isPremiumUser = email.includes('premium') || localStorage.getItem('isPremiumUser') === 'true';
 
-    if ((isClerkPremium || isLocalPremium) && !isOnPremiumPage) {
-      router.replace('/premium');
-    } else {
-      setIsChecking(false);
+      if (!isPremiumUser) {
+        router.replace('/');
+      } else {
+        setIsPremium(true);
+      }
     }
-  }, [
-    isLoaded,
-    isSignedIn,
-    pathname,
-    router,
-    user?.publicMetadata?.premium,
-  ]);
+  }, [isLoaded, isSignedIn, user, router]);
 
-  if (!isLoaded) {
-    return <p className="text-center mt-10 text-gray-500">Loading user data...</p>;
-  }
-
-  if (!isSignedIn) {
-    return <p className="text-center mt-10 text-gray-500">Please sign in to access dashboard.</p>;
-  }
-
-  if (isChecking) {
-    return <p className="text-center mt-10 text-gray-500">Checking subscription status...</p>;
+  if (!isLoaded || !isSignedIn || !isPremium) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-lg font-semibold text-gray-700">
+        Loading premium experience...
+      </div>
+    );
   }
 
   const name = user.fullName || 'Student';
   const email = user?.emailAddresses?.[0]?.emailAddress || 'Not available';
 
   return (
-    <div className="min-h-[1000px] bg-gradient-to-br from-indigo-100 via-pink-100 to-yellow-100 p-6 text-center flex flex-col items-center">
-      <h1 className="text-4xl font-bold text-purple-900 mt-10">
-        Welcome <span className="text-pink-600">{name}</span> 🌟
-      </h1>
-      <p className="text-gray-700 mt-2 text-lg">
-        Email: <span className="font-medium">{email}</span>
-      </p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-purple-900 text-white p-8 flex flex-col items-center">
+      <h1 className="text-5xl font-bold mb-4 text-yellow-400">🌟 Premium Dashboard</h1>
+      <p className="text-xl text-center text-purple-100 mb-2">Hello, <span className="font-bold text-white">{name}</span> 👋</p>
+      <p className="text-md text-purple-200">Email: {email}</p>
 
-      <div className="w-full max-w-4xl bg-white shadow-2xl rounded-3xl p-10 mt-10 text-left space-y-8">
-        <section className="bg-purple-50 rounded-xl p-6">
-          <h2 className="text-2xl font-semibold text-purple-700 mb-2">💁‍♂️ Meet the Admin: Anand Kumar Rai</h2>
+      <div className="bg-white text-black mt-10 p-8 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
+        <section className="bg-purple-100 p-6 rounded-xl">
+          <h2 className="text-2xl font-semibold text-purple-800 mb-2">🔥 Welcome to Premium</h2>
           <p className="text-gray-800 leading-relaxed text-lg">
-            Anand Kumar Rai is the visionary creator behind StudyElite — a dedicated learner, future engineer, and tech-savvy mentor. Currently in his final year of
-            <strong className="text-purple-800"> Diploma in Electronics Engineering</strong>, Anand is also targeting top ranks in <strong>Class 12 PCM</strong> and <strong>IIT-JEE 2026</strong>.
-            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he's on a mission to empower students across India 🚀💡
+            You now have access to all premium benefits offered by <strong>StudyElite</strong>. Unlock your true academic potential with exclusive features tailored just for you!
           </p>
         </section>
 
-        <section className="bg-indigo-50 rounded-xl p-6">
-          <h2 className="text-2xl font-semibold text-purple-700 mb-2">📚 Your Courses & Skills</h2>
+        <section className="bg-indigo-100 p-6 rounded-xl">
+          <h2 className="text-2xl font-semibold text-indigo-800 mb-2">🚀 Premium Benefits Unlocked</h2>
           <ul className="list-disc list-inside text-gray-800 space-y-2 text-lg">
-            <li>🎓 Final Year Diploma in Electronics Engineering</li>
-            <li>📘 Preparing for Class 12 Boards (PCM)</li>
-            <li>💻 IIT-JEE 2026 Full Focus</li>
-            <li>🌐 Learning Full Stack Web Dev (Node.js, Express, MongoDB)</li>
-            <li>🎨 Tailwind CSS | Responsive Design</li>
-            <li>🧑‍💻 Mastering Python & C</li>
-            <li>🎮 Free Fire Gamer (Sharp Mind)</li>
-            <li>🏋️ Fitness & Self-Discipline</li>
-            <li>🏡 Household Management Expert</li>
+            <li>📚 Full Access to HD Notes (PDF + handwritten)</li>
+            <li>🧠 Weekly Mock Tests + Instant Evaluation</li>
+            <li>🎥 Premium Mentor Lectures</li>
+            <li>💬 One-on-One Doubt Sessions</li>
+            <li>📅 Daily Study Planner + Goal Tracker</li>
+            <li>🧭 Time Table Generator & Smart Revision</li>
+            <li>🎯 Live Chat + Telegram Support</li>
+            <li>🎁 Bonus: Career Mentorship, Project Ideas</li>
           </ul>
         </section>
 
-        <section className="bg-yellow-50 rounded-xl p-6">
-          <h2 className="text-2xl font-semibold text-purple-700 mb-2">🌟 Premium Features Just for You</h2>
-          <ul className="list-disc list-inside text-gray-800 space-y-2 text-lg">
-            <li>📚 HD Quality Study Notes (PDF + handwritten)</li>
-            <li>📝 Weekly Mock Tests with Instant Feedback</li>
-            <li>🎥 Exclusive Mentor Video Lectures</li>
-            <li>🤝 One-on-One Doubt Sessions</li>
-            <li>📊 Daily Goal Tracking System</li>
-            <li>🔁 Smart Revision & Time Table Generator</li>
-            <li>💬 Live Telegram/Chat Doubt Support</li>
-            <li>🎁 Bonus: Project Ideas, Roadmaps, Career Mentorship</li>
-          </ul>
-        </section>
-
-        <div className="text-center mt-10">
+        <div className="text-center">
           <button
-            onClick={() => router.push('/subscribe-only')}
-            className="bg-purple-700 hover:bg-purple-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transition"
+            className="bg-purple-700 hover:bg-purple-800 text-white px-8 py-3 rounded-full text-lg font-semibold transition shadow-lg"
+            onClick={() => alert('More premium content coming soon!')}
           >
-            🔓 Unlock Premium & Supercharge Your Study Journey
+            ✨ Explore More Premium Features
           </button>
         </div>
       </div>
 
-      <footer className="mt-10 text-sm text-gray-600">
-        Made with ❤️ by Anand Kumar Rai (Admin & Developer)
+      <footer className="mt-10 text-sm text-purple-200">
+        Premium access provided by <strong>Anand Kumar Rai</strong> 💻✨
       </footer>
     </div>
   );
