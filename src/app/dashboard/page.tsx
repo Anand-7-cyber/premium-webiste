@@ -1,29 +1,32 @@
 'use client'
 
 import { useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function DashboardPage() {
   const { user, isSignedIn, isLoaded } = useUser()
   const router = useRouter()
+  const pathname = usePathname()
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      const isClerkPremium = user?.publicMetadata?.premium === true
-      const isLocalPremium = localStorage.getItem('isPremiumUser') === 'true'
+    if (!isLoaded || !isSignedIn) {
+      return
+    }
 
-      if ((isClerkPremium || isLocalPremium) && window.location.pathname !== '/premium') {
-        router.replace('/premium')
-        return
-      }
+    const isClerkPremium = user?.publicMetadata?.premium === true
+    const isLocalPremium = typeof window !== 'undefined' && localStorage.getItem('isPremiumUser') === 'true'
+    const isOnPremiumPage = pathname === '/premium'
 
+    // prevent redirect loop
+    if ((isClerkPremium || isLocalPremium) && !isOnPremiumPage) {
+      router.replace('/premium')
+    } else {
       setIsChecking(false)
     }
-  }, [isLoaded, isSignedIn, user, router])
+  }, [isLoaded, isSignedIn, pathname])
 
-  // ✅ ESLint-safe loading checks
   if (!isLoaded) {
     return <p className="text-center mt-10 text-gray-500">Loading user data...</p>
   }
@@ -54,7 +57,7 @@ export default function DashboardPage() {
           <p className="text-gray-800 leading-relaxed text-lg">
             Anand Kumar Rai is the visionary creator behind StudyElite — a dedicated learner, future engineer, and tech-savvy mentor. Currently in his final year of
             <strong className="text-purple-800"> Diploma in Electronics Engineering</strong>, Anand is also targeting top ranks in <strong>Class 12 PCM</strong> and <strong>IIT-JEE 2026</strong>.
-            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he&apos;s on a mission to empower students across India 🚀💡
+            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he's on a mission to empower students across India 🚀💡
           </p>
         </section>
 
@@ -91,7 +94,6 @@ export default function DashboardPage() {
           <button
             onClick={() => router.push('/subscribe-only')}
             className="bg-purple-700 hover:bg-purple-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transition"
-            aria-label="Unlock Premium Features"
           >
             🔓 Unlock Premium &amp; Supercharge Your Study Journey
           </button>
