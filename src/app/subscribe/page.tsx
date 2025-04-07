@@ -16,7 +16,7 @@ export default function SubscriberForm() {
   useEffect(() => {
     const premium = localStorage.getItem('isPremiumUser');
     if (premium === 'true') {
-      router.replace('/premium-home');
+      router.replace('/premium');
     }
   }, [router]);
 
