@@ -14,7 +14,10 @@ export default function PremiumPage() {
       const hasSubscription = email.includes('premium')
 
       if (!hasSubscription) {
-        router.replace('/') // Redirect to home if not premium
+        if (window.location.pathname !== '/') {
+          router.replace('/')
+          return
+        }
       }
     }
   }, [isLoaded, isSignedIn, user, router])

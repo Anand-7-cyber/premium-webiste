@@ -6,12 +6,14 @@ import { useRouter } from 'next/navigation';
 export default function PremiumHome() {
   const router = useRouter();
 
-  // 🔒 Redirect if user is not premium
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const premium = localStorage.getItem('isPremiumUser');
       if (premium !== 'true') {
-        router.replace('/');
+        if (window.location.pathname !== '/') {
+          router.replace('/');
+          return;
+        }
       }
     }
   }, [router]);
