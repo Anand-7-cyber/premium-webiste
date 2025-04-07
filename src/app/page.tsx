@@ -9,17 +9,18 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (!isLoaded) return;
+  
+    if (isSignedIn) {
       const isPremium = user?.publicMetadata?.premium === true;
-
-      if (isPremium) {
-        router.replace('/premium');
-      } else {
-        router.replace('/free-trial'); // ya koi non-premium ka page
+      const targetRoute = isPremium ? '/premium' : '/free-trial';
+  
+      if (window.location.pathname !== targetRoute) {
+        router.replace(targetRoute);
       }
     }
   }, [isLoaded, isSignedIn, user, router]);
-
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 via-pink-100 to-yellow-100 px-4 py-12 text-center">
       <h1 className="text-5xl font-extrabold text-purple-800 mb-4">StudyElite 🚀</h1>
