@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 export default function DashboardPage() {
   const { user, isSignedIn, isLoaded } = useUser()
   const router = useRouter()
-
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
@@ -15,7 +14,7 @@ export default function DashboardPage() {
       const isClerkPremium = user?.publicMetadata?.premium === true
       const isLocalPremium = localStorage.getItem('isPremiumUser') === 'true'
 
-      // ✅ Prevent redirect loop
+      // ✅ Prevent redirect loop for premium users
       if ((isClerkPremium || isLocalPremium) && window.location.pathname !== '/premium') {
         router.replace('/premium')
         return
@@ -25,11 +24,14 @@ export default function DashboardPage() {
     }
   }, [isLoaded, isSignedIn, user, router])
 
-  if (!isLoaded || isChecking) {
-    return <p className="text-center mt-10 text-gray-500">Loading...</p>
+  // ✅ ESLint-safe loading & auth checks
+  if (!isLoaded || !isSignedIn) {
+    return <div className="text-center text-gray-500 mt-10">Checking authentication...</div>
   }
 
-  if (!isSignedIn) return null
+  if (isChecking) {
+    return <p className="text-center mt-10 text-gray-500">Loading dashboard...</p>
+  }
 
   const name = user.fullName || 'Student'
   const email = user?.emailAddresses?.[0]?.emailAddress || 'Not available'
@@ -44,15 +46,17 @@ export default function DashboardPage() {
       </p>
 
       <div className="w-full max-w-4xl bg-white shadow-2xl rounded-3xl p-10 mt-10 text-left space-y-8">
+        {/* Admin Info */}
         <section className="bg-purple-50 rounded-xl p-6">
           <h2 className="text-2xl font-semibold text-purple-700 mb-2">💁‍♂️ Meet the Admin: Anand Kumar Rai</h2>
           <p className="text-gray-800 leading-relaxed text-lg">
             Anand Kumar Rai is the visionary creator behind StudyElite — a dedicated learner, future engineer, and tech-savvy mentor. Currently in his final year of
             <strong className="text-purple-800"> Diploma in Electronics Engineering</strong>, Anand is also targeting top ranks in <strong>Class 12 PCM</strong> and <strong>IIT-JEE 2026</strong>.
-            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he&apos;s on a mission to empower students across India 🚀💡
+            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he's on a mission to empower students across India 🚀💡
           </p>
         </section>
 
+        {/* Courses Section */}
         <section className="bg-indigo-50 rounded-xl p-6">
           <h2 className="text-2xl font-semibold text-purple-700 mb-2">📚 Your Courses & Skills</h2>
           <ul className="list-disc list-inside text-gray-800 space-y-2 text-lg">
@@ -68,6 +72,7 @@ export default function DashboardPage() {
           </ul>
         </section>
 
+        {/* Premium Benefits */}
         <section className="bg-yellow-50 rounded-xl p-6">
           <h2 className="text-2xl font-semibold text-purple-700 mb-2">🌟 Premium Features Just for You</h2>
           <ul className="list-disc list-inside text-gray-800 space-y-2 text-lg">
@@ -86,7 +91,6 @@ export default function DashboardPage() {
           <button
             onClick={() => router.push('/subscribe-only')}
             className="bg-purple-700 hover:bg-purple-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transition"
-            aria-label="Unlock Premium Features"
           >
             🔓 Unlock Premium & Supercharge Your Study Journey
           </button>
