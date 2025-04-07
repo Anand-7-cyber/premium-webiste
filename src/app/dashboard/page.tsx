@@ -15,8 +15,9 @@ export default function DashboardPage() {
       const isClerkPremium = user?.publicMetadata?.premium === true
       const isLocalPremium = localStorage.getItem('isPremiumUser') === 'true'
 
-      if (isClerkPremium || isLocalPremium) {
-        router.replace('/premium') // redirect premium users
+      // ✅ Prevent redirect loop
+      if ((isClerkPremium || isLocalPremium) && window.location.pathname !== '/premium') {
+        router.replace('/premium')
         return
       }
 
@@ -31,14 +32,16 @@ export default function DashboardPage() {
   if (!isSignedIn) return null
 
   const name = user.fullName || 'Student'
-  const email = user?.emailAddresses?.[0]?.emailAddress
+  const email = user?.emailAddresses?.[0]?.emailAddress || 'Not available'
 
   return (
     <div className="min-h-[1000px] bg-gradient-to-br from-indigo-100 via-pink-100 to-yellow-100 p-6 text-center flex flex-col items-center">
       <h1 className="text-4xl font-bold text-purple-900 mt-10">
         Welcome <span className="text-pink-600">{name}</span> 🌟
       </h1>
-      <p className="text-gray-700 mt-2 text-lg">Email: <span className="font-medium">{email}</span></p>
+      <p className="text-gray-700 mt-2 text-lg">
+        Email: <span className="font-medium">{email}</span>
+      </p>
 
       <div className="w-full max-w-4xl bg-white shadow-2xl rounded-3xl p-10 mt-10 text-left space-y-8">
         <section className="bg-purple-50 rounded-xl p-6">
@@ -83,6 +86,7 @@ export default function DashboardPage() {
           <button
             onClick={() => router.push('/subscribe-only')}
             className="bg-purple-700 hover:bg-purple-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transition"
+            aria-label="Unlock Premium Features"
           >
             🔓 Unlock Premium & Supercharge Your Study Journey
           </button>
