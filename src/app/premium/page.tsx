@@ -12,7 +12,7 @@ export default function PremiumPage() {
   useEffect(() => {
     if (isLoaded) {
       if (!isSignedIn) {
-        router.replace('/'); // Not signed in, redirect
+        router.replace('/');
         return;
       }
 
@@ -20,9 +20,9 @@ export default function PremiumPage() {
       const isPremiumUser = email.includes('premium') || localStorage.getItem('isPremiumUser') === 'true';
 
       if (!isPremiumUser) {
-        router.replace('/'); // Not premium, redirect
+        router.replace('/');
       } else {
-        setIsPremium(true); // Premium user, allow access
+        setIsPremium(true);
       }
     }
   }, [isLoaded, isSignedIn, user, router]);
@@ -30,33 +30,55 @@ export default function PremiumPage() {
   if (!isLoaded || !isSignedIn || !isPremium) {
     return (
       <div className="min-h-screen flex items-center justify-center text-lg font-semibold text-gray-700">
-        Loading...
+        Loading premium experience...
       </div>
     );
   }
 
+  const name = user.fullName || 'Student';
+  const email = user?.emailAddresses?.[0]?.emailAddress || 'Not available';
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-700 to-indigo-900 text-white flex items-center justify-center p-6">
-      <div className="bg-white text-black p-10 rounded-3xl shadow-2xl max-w-2xl w-full text-center space-y-6">
-        <h1 className="text-4xl font-bold text-purple-700">🌟 Premium Access Granted</h1>
-        <p className="text-lg">Welcome, {user.firstName}! You now have full access to our premium features.</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-purple-900 text-white p-8 flex flex-col items-center">
+      <h1 className="text-5xl font-bold mb-4 text-yellow-400">🌟 Premium Dashboard</h1>
+      <p className="text-xl text-center text-purple-100 mb-2">Hello, <span className="font-bold text-white">{name}</span> 👋</p>
+      <p className="text-md text-purple-200">Email: {email}</p>
 
-        <div className="mt-6 text-left bg-purple-100 p-6 rounded-xl">
-          <h2 className="text-xl font-semibold text-purple-800 mb-2">Your Premium Benefits:</h2>
-          <ul className="list-disc list-inside text-gray-700 space-y-1">
-            <li>🚀 Unlimited Access to Exclusive Features</li>
-            <li>🎁 Priority Updates and Early Access</li>
-            <li>📞 24/7 Premium Support</li>
+      <div className="bg-white text-black mt-10 p-8 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
+        <section className="bg-purple-100 p-6 rounded-xl">
+          <h2 className="text-2xl font-semibold text-purple-800 mb-2">🔥 Welcome to Premium</h2>
+          <p className="text-gray-800 leading-relaxed text-lg">
+            You now have access to all premium benefits offered by <strong>StudyElite</strong>. Unlock your true academic potential with exclusive features tailored just for you!
+          </p>
+        </section>
+
+        <section className="bg-indigo-100 p-6 rounded-xl">
+          <h2 className="text-2xl font-semibold text-indigo-800 mb-2">🚀 Premium Benefits Unlocked</h2>
+          <ul className="list-disc list-inside text-gray-800 space-y-2 text-lg">
+            <li>📚 Full Access to HD Notes (PDF + handwritten)</li>
+            <li>🧠 Weekly Mock Tests + Instant Evaluation</li>
+            <li>🎥 Premium Mentor Lectures</li>
+            <li>💬 One-on-One Doubt Sessions</li>
+            <li>📅 Daily Study Planner + Goal Tracker</li>
+            <li>🧭 Time Table Generator & Smart Revision</li>
+            <li>🎯 Live Chat + Telegram Support</li>
+            <li>🎁 Bonus: Career Mentorship, Project Ideas</li>
           </ul>
-        </div>
+        </section>
 
-        <button
-          className="mt-6 bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg transition"
-          onClick={() => alert('Stay tuned for more premium content!')}
-        >
-          Explore More
-        </button>
+        <div className="text-center">
+          <button
+            className="bg-purple-700 hover:bg-purple-800 text-white px-8 py-3 rounded-full text-lg font-semibold transition shadow-lg"
+            onClick={() => alert('More premium content coming soon!')}
+          >
+            ✨ Explore More Premium Features
+          </button>
+        </div>
       </div>
+
+      <footer className="mt-10 text-sm text-purple-200">
+        Premium access provided by <strong>Anand Kumar Rai</strong> 💻✨
+      </footer>
     </div>
   );
 }
