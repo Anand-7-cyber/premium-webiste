@@ -11,8 +11,11 @@ export default function LoginPage() {
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       const isPremium = user?.publicMetadata?.premium === true;
+
       if (isPremium) {
-        router.replace('/premium'); // ✅ Redirect to premium instead of dashboard
+        router.replace('/premium');
+      } else {
+        router.replace('/free-trial'); // ya koi non-premium ka page
       }
     }
   }, [isLoaded, isSignedIn, user, router]);
