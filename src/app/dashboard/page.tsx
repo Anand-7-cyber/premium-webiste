@@ -11,21 +11,26 @@ export default function DashboardPage() {
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    if (!isLoaded || !isSignedIn) {
-      return
-    }
+    if (!isLoaded || !isSignedIn) return
 
     const isClerkPremium = user?.publicMetadata?.premium === true
-    const isLocalPremium = typeof window !== 'undefined' && localStorage.getItem('isPremiumUser') === 'true'
+    const isLocalPremium =
+      typeof window !== 'undefined' &&
+      localStorage.getItem('isPremiumUser') === 'true'
     const isOnPremiumPage = pathname === '/premium'
 
-    // prevent redirect loop
     if ((isClerkPremium || isLocalPremium) && !isOnPremiumPage) {
       router.replace('/premium')
     } else {
       setIsChecking(false)
     }
-  }, [isLoaded, isSignedIn, pathname])
+  }, [
+    isLoaded,
+    isSignedIn,
+    pathname,
+    router,
+    user?.publicMetadata?.premium
+  ])
 
   if (!isLoaded) {
     return <p className="text-center mt-10 text-gray-500">Loading user data...</p>
@@ -57,7 +62,7 @@ export default function DashboardPage() {
           <p className="text-gray-800 leading-relaxed text-lg">
             Anand Kumar Rai is the visionary creator behind StudyElite — a dedicated learner, future engineer, and tech-savvy mentor. Currently in his final year of
             <strong className="text-purple-800"> Diploma in Electronics Engineering</strong>, Anand is also targeting top ranks in <strong>Class 12 PCM</strong> and <strong>IIT-JEE 2026</strong>.
-            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he's on a mission to empower students across India 🚀💡
+            With expert knowledge in <em>HTML, CSS, JS, Node.js</em> and a hunger to grow, he&apos;s on a mission to empower students across India 🚀💡
           </p>
         </section>
 
