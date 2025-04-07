@@ -7,14 +7,9 @@ export default function PremiumHome() {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const premium = localStorage.getItem('isPremiumUser');
-      if (premium !== 'true') {
-        if (window.location.pathname !== '/') {
-          router.replace('/');
-          return;
-        }
-      }
+    const premium = localStorage.getItem('isPremiumUser');
+    if (premium !== 'true') {
+      router.replace('/');
     }
   }, [router]);
 
@@ -23,7 +18,7 @@ export default function PremiumHome() {
       <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-2xl w-full text-center space-y-6">
         <h1 className="text-4xl font-bold text-yellow-700">🎉 Welcome to Premium!</h1>
         <p className="text-lg text-gray-700">
-          You&apos;re now a Premium Member! Enjoy your exclusive content here 🏆
+          You're now a Premium Member! Enjoy your exclusive content here 🏆
         </p>
 
         <div className="mt-6 bg-yellow-100 border border-yellow-300 p-6 rounded-xl shadow-inner">
