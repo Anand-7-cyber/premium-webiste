@@ -1,5 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
 'use client';
+/* eslint-disable react/no-unescaped-entities */
 
 import { useUser } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
@@ -17,9 +17,7 @@ export default function PremiumPage() {
         return;
       }
 
-      const email = user?.emailAddresses?.[0]?.emailAddress || '';
-      const isPremiumUser = email.includes('premium') || localStorage.getItem('isPremiumUser') === 'true';
-
+      const isPremiumUser = user?.publicMetadata?.premium === true;
       if (!isPremiumUser) {
         router.replace('/');
       } else {
@@ -52,29 +50,6 @@ export default function PremiumPage() {
             You now have access to all premium benefits offered by <strong>StudyElite</strong>. Unlock your true academic potential with exclusive features tailored just for you!
           </p>
         </section>
-
-        <section className="bg-indigo-100 p-6 rounded-xl">
-          <h2 className="text-2xl font-semibold text-indigo-800 mb-2">🚀 Premium Benefits Unlocked</h2>
-          <ul className="list-disc list-inside text-gray-800 space-y-2 text-lg">
-            <li>📚 Full Access to HD Notes (PDF + handwritten)</li>
-            <li>🧠 Weekly Mock Tests + Instant Evaluation</li>
-            <li>🎥 Premium Mentor Lectures</li>
-            <li>💬 One-on-One Doubt Sessions</li>
-            <li>📅 Daily Study Planner + Goal Tracker</li>
-            <li>🧭 Time Table Generator & Smart Revision</li>
-            <li>🎯 Live Chat + Telegram Support</li>
-            <li>🎁 Bonus: Career Mentorship, Project Ideas</li>
-          </ul>
-        </section>
-
-        <div className="text-center">
-          <button
-            className="bg-purple-700 hover:bg-purple-800 text-white px-8 py-3 rounded-full text-lg font-semibold transition shadow-lg"
-            onClick={() => alert('More premium content coming soon!')}
-          >
-            ✨ Explore More Premium Features
-          </button>
-        </div>
       </div>
 
       <footer className="mt-10 text-sm text-purple-200">
