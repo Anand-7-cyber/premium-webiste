@@ -9,15 +9,14 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || !isSignedIn) return;
   
-    if (isSignedIn) {
-      const isPremium = user?.publicMetadata?.premium === true;
-      const targetRoute = isPremium ? '/premium' : '/free-trial';
+    const isPremium = user?.publicMetadata?.premium === true;
+    const currentPath = window.location.pathname;
+    const targetPath = isPremium ? '/premium' : '/free-trial';
   
-      if (window.location.pathname !== targetRoute) {
-        router.replace(targetRoute);
-      }
+    if (currentPath !== targetPath) {
+      router.replace(targetPath);
     }
   }, [isLoaded, isSignedIn, user, router]);
   
@@ -30,12 +29,12 @@ export default function LoginPage() {
 
       <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-md border border-purple-200">
         <SignIn
-          afterSignInUrl="/premium"
-          routing="hash"
-          appearance={{
-            elements: {
-              formButtonPrimary: 'bg-purple-600 hover:bg-purple-700 text-white',
-              card: 'shadow-xl rounded-2xl',
+        forceRedirectUrl="/free-trial"
+        routing="hash"
+        appearance={{
+          elements: {
+            formButtonPrimary: 'bg-purple-600 hover:bg-purple-700 text-white',
+            card: 'shadow-xl rounded-2xl',
             },
           }}
         />
